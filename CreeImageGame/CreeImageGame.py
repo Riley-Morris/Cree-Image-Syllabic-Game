@@ -1,4 +1,5 @@
-#TODO - FIX BUG, can change butt1 image in function to something else - creates weirder bug.... need to store initial stuff differently? and its almost like its not getting deleted.
+#TODO - Implement Function to remember choices
+#new label that displays whether you were correct or not
 
 from tkinter import *
 from PIL import ImageTk, Image

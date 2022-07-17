@@ -112,7 +112,7 @@ def second_screen():
         scorecard.grid(row=0, column=1)
         scorecard.configure(font=font_tuple)
     else:
-        scorecard = Label(root, text=f'Your Answer was inocorrect! \nNOT SO NICE\n\nCURRENT SCORE: {correct_answers} out of {second_click_count}\n\n Click the correct answer to continue')
+        scorecard = Label(root, text=f'Your Answer was incorrect! \nNOT SO NICE\n\nCURRENT SCORE: {correct_answers} out of {second_click_count}\n\n Click the correct answer to continue')
         scorecard.grid(row=0, column=1)
         scorecard.configure(font=font_tuple)
 #function that handles button clicks on the main 4

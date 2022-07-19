@@ -1,5 +1,3 @@
-#TODO - FIX BUG, can change butt1 image in function to something else - creates weirder bug.... need to store initial stuff differently? and its almost like its not getting deleted.
-
 from tkinter import *
 from PIL import ImageTk, Image
 import os

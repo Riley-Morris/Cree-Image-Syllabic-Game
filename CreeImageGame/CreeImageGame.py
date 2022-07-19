@@ -1,3 +1,5 @@
+#TODO - FIX BUG, can change butt1 image in function to something else - creates weirder bug.... need to store initial stuff differently? and its almost like its not getting deleted.
+
 from tkinter import *
 from PIL import ImageTk, Image
 import os
@@ -17,8 +19,11 @@ current_click = ''
 correct_answers = 0
 second_click_count = 0
 
-font_tuple = ('Euphemia', 14, 'bold')
+font_tuple = ('Euphemia', 10, 'bold')
 #make list of images in directory
+folder = "Images"
+if folder not in os.listdir():
+    os.mkdir(folder)
 for file in os.listdir('Images'):
     image_list.append(file)
 #remove start image from list
@@ -108,11 +113,11 @@ def second_screen():
         #increment current score
         correct_answers += 1
         #create new scorecard
-        scorecard = Label(root,text=f'Your Answer was correct! \nNICE\n\nCURRENT SCORE: {correct_answers} out of {second_click_count}\n\n Click the correct answer to continue')
+        scorecard = Label(score_frame,text=f'Your Answer was correct! \nNICE\n\nCURRENT SCORE: {correct_answers} out of {second_click_count}\n\n Click the correct answer to continue')
         scorecard.grid(row=0, column=1)
         scorecard.configure(font=font_tuple)
     else:
-        scorecard = Label(root, text=f'Your Answer was incorrect! \nNOT SO NICE\n\nCURRENT SCORE: {correct_answers} out of {second_click_count}\n\n Click the correct answer to continue')
+        scorecard = Label(score_frame, text=f'Your Answer was incorrect! \nNOT SO NICE\n\nCURRENT SCORE: {correct_answers} out of {second_click_count}\n\n Click the correct answer to continue')
         scorecard.grid(row=0, column=1)
         scorecard.configure(font=font_tuple)
 #function that handles button clicks on the main 4
@@ -186,7 +191,7 @@ def change_screen(button_press):
         #redefine image
         image1 = ImageTk.PhotoImage(Image.open(f'Images/{imagen}'))
         img_label = Label(image=image1)
-        img_label.grid(row=0, column=0, sticky = W)
+        img_label.grid(row=0, column=0, sticky = W, padx = 15)
         #new scorecard
         scorecard.destroy()
         scorecard = Label(root,text=f'CURRENT SCORE: {correct_answers} out of {second_click_count}')
@@ -203,9 +208,11 @@ def change_screen(button_press):
 image1 = ImageTk.PhotoImage(Image.open(f'Images/{imagen}'))
 img_label = Label(image = image1)
 img_label.grid(row = 0, column = 0)
-
+#frame
+score_frame = LabelFrame(root, padx = 20, pady = 30)
+score_frame.grid(row=0, column=1, padx = 5, pady =20)
 #score label
-scorecard = Label(root, text = f'Welcome to the game!\n\nClick the correct Syllabic to match the image\n\nGoodLuck!' )
+scorecard = Label(score_frame, text = f'Welcome to the game!\n\nClick the correct Syllabic to match the image\n\nGoodLuck!' )
 scorecard.grid(row=0, column=1)
 scorecard.configure(font = font_tuple)
 #create initial buttons

@@ -1,3 +1,5 @@
+#TODO - FIX BUG, can change butt1 image in function to something else - creates weirder bug.... need to store initial stuff differently? and its almost like its not getting deleted.
+
 from tkinter import *
 from PIL import ImageTk, Image
 import os
@@ -6,7 +8,7 @@ import random
 root = Tk()
 
 root.title('Test App')
-root.iconbitmap(r"C:\Users\riley\Documents\Pyth\CreeImageGame\Icon\CrowIcon.ico")
+root.iconbitmap(r"Icon\CrowIcon.ico")
 imagen = 'Start.png'
 
 image_list = []
@@ -176,7 +178,6 @@ def change_screen(button_press):
     # increment click counter
     click_count += 1
     #user click button index
-    print(click_count)
     if click_count % 2 != 0:
 
         #forget the label for image

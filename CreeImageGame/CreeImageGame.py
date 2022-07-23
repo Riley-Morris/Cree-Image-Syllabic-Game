@@ -5,7 +5,7 @@ import random
 
 root = Tk()
 
-root.title('Test App')
+root.title('Cree Syllabic Image Game')
 root.iconbitmap(r"Icon\CrowIcon.ico")
 imagen = 'Start.png'
 
@@ -16,16 +16,11 @@ correct_index = 0
 current_click = ''
 correct_answers = 0
 second_click_count = 0
+game_choice = 0
 
-font_tuple = ('Euphemia', 10, 'bold')
-#make list of images in directory
-folder = "Images"
-if folder not in os.listdir():
-    os.mkdir(folder)
-for file in os.listdir('Images'):
-    image_list.append(file)
-#remove start image from list
-image_list.remove('Start.png')
+font_tuple = ('Euphemia', 11, 'bold')
+
+
 
 
 # function to generate correct images for buttons (1 correct 3 randoms)
@@ -133,7 +128,9 @@ def answer_click():
     global butt3_img
     global butt4_img
     global button_list
+    global choice1
 
+    choice1.destroy()
     # destory old buttons
     button1.destroy()
     button2.destroy()
@@ -175,8 +172,8 @@ def change_screen(button_press):
     current_click = button_press
     # increment click counter
     click_count += 1
-    #user click button index
-    if click_count % 2 != 0:
+    #user click button index -
+    if click_count % 2 != 0 and click_count < game_choice * 2 + 1:
 
         #forget the label for image
         img_label.grid_forget()
@@ -191,14 +188,57 @@ def change_screen(button_press):
         img_label.grid(row=0, column=0, sticky = W, padx = 15)
         #new scorecard
         scorecard.destroy()
-        scorecard = Label(root,text=f'CURRENT SCORE: {correct_answers} out of {second_click_count}')
+        scorecard = Label(score_frame,text=f'CURRENT SCORE: {correct_answers} out of {second_click_count}')
         scorecard.grid(row=0, column=1)
         scorecard.configure(font=font_tuple)
         #generate new buttons
         answer_click()
 
-    else:
+    elif click_count % 2 == 0 and click_count < game_choice * 2 + 1:
         second_screen()
+    else:
+        final_screen()
+
+
+def final_screen():
+    global button1
+    global button2
+    global button3
+    global button4
+    global  scorecard
+    button1.destroy()
+    button2.destroy()
+    button3.destroy()
+    button4.destroy()
+    scorecard.destroy()
+    #final scorecard
+    scorecard = Label(score_frame, text=f'FINAL SCORE: {correct_answers} out of {second_click_count}\n\n Thanks for playing!')
+    scorecard.grid(row=0, column=1)
+    scorecard.configure(font=font_tuple)
+
+
+#function that will handle the game selection
+def choice_handler(button_press):
+    global image_list
+    global game_choice
+    #update game choice
+    game_choice = button_press
+
+    if button_press == 10:
+    #check if we are on last question:
+        if click_count < 10:
+            # make list of images in directory of the correct length for game choice
+            folder = "Images"
+            if folder not in os.listdir():
+                os.mkdir(folder)
+            for file in os.listdir('Images'):
+                image_list.append(file)
+            # remove start image from list
+            image_list.remove('Start.png')
+            # reduce image list size to the choice
+            for i in range(9):
+                image_list.pop()
+            change_screen(1)
 
 
 #image label
@@ -213,24 +253,18 @@ scorecard = Label(score_frame, text = f'Welcome to the game!\n\nClick the correc
 scorecard.grid(row=0, column=1)
 scorecard.configure(font = font_tuple)
 #create initial buttons
-butt1_img = PhotoImage(file="Icon/Butt1.png")
-butt1_label = Label(image=butt1_img)
-button1 = Button(root, image=butt1_img, command=lambda m='0': change_screen(m))
-button1.grid(row=2, column=0)
 
-butt2_img = PhotoImage(file="Icon/Butt1.png")
-butt2_label = Label(image=butt2_img)
-button2 = Button(root, image=butt2_img, command=lambda m='1' : change_screen(m))
-button2.grid(row=2, column=1)
 
-butt3_img = PhotoImage(file="Icon/Butt1.png")
-butt3_label = Label(image=butt3_img)
-button3 = Button(root, image=butt3_img, command=lambda m='2': change_screen(m))
-button3.grid(row=3, column=0)
+button1 = Button(root, command=lambda m='0': change_screen(m))
 
-butt4_img = PhotoImage(file="Icon/Butt1.png")
-butt4_label = Label(image=butt4_img)
-button4 = Button(root, image=butt4_img, command=lambda m='3': change_screen(m))
-button4.grid(row=3, column=1)
+button2 = Button(root, command=lambda m='1' : change_screen(m))
+
+button3 = Button(root, command=lambda m='2': change_screen(m))
+
+button4 = Button(root, command=lambda m='3': change_screen(m))
+
+choice1 = Button(root, text = '10 questions', command = lambda m=10 : choice_handler(m))
+choice1.grid(row=1, column = 1, pady = 15)
+choice1.configure(font = font_tuple)
 
 root.mainloop()

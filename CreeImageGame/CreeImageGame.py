@@ -10,6 +10,7 @@ root.iconbitmap(r"Icon\CrowIcon.ico")
 imagen = 'Start.png'
 
 image_list = []
+image_listgame = []
 button_list=[]
 click_count = 0
 correct_index = 0
@@ -129,8 +130,16 @@ def answer_click():
     global butt4_img
     global button_list
     global choice1
+    global choice2
+    global choice3
+    global choice_frame
+    global image_frame
 
+    image_frame.destroy()
     choice1.destroy()
+    choice2.destroy()
+    choice3.destroy()
+    choice_frame.destroy()
     # destory old buttons
     button1.destroy()
     button2.destroy()
@@ -179,7 +188,8 @@ def change_screen(button_press):
         img_label.grid_forget()
 
         #pop off next image from list
-        imagen = image_list.pop(random.randrange(0, len(image_list)))
+        print(len(image_list))
+        imagen = image_listgame.pop()
         # generate buttons
         button_image_gen()
         #redefine image
@@ -223,38 +233,32 @@ def choice_handler(button_press):
     global game_choice
     #update game choice
     game_choice = button_press
+    # make list of images in directory of the correct length for game choice
+    folder = "Images"
+    if folder not in os.listdir():
+        os.mkdir(folder)
+    for file in os.listdir('Images'):
+        image_list.append(file)
+    # remove start image from list
+    image_list.remove('Start.png')
 
     if button_press == 10:
-    #check if we are on last question:
-        if click_count < 10:
-            # make list of images in directory of the correct length for game choice
-            folder = "Images"
-            if folder not in os.listdir():
-                os.mkdir(folder)
-            for file in os.listdir('Images'):
-                image_list.append(file)
-            # remove start image from list
-            image_list.remove('Start.png')
             # reduce image list size to the choice
-            for i in range(9):
-                image_list.pop()
-            change_screen(1)
+        for i in range(10):
+            image_listgame.append(image_list.pop())
+        change_screen(1)
+    elif button_press == 15:
+        for i in range(15):
+            image_listgame.append(image_list.pop())
+        change_screen(1)
+    elif button_press == 20:
+        for i in range(20):
+            image_listgame.append(image_list.pop())
+        change_screen(1)
 
-
-#image label
-image1 = ImageTk.PhotoImage(Image.open(f'Images/{imagen}'))
-img_label = Label(image = image1)
-img_label.grid(row = 0, column = 0)
-#frame
-score_frame = LabelFrame(root, padx = 20, pady = 30)
-score_frame.grid(row=0, column=1, padx = 5, pady =20)
-#score label
-scorecard = Label(score_frame, text = f'Welcome to the game!\n\nClick the correct Syllabic to match the image\n\nGoodLuck!' )
-scorecard.grid(row=0, column=1)
-scorecard.configure(font = font_tuple)
+image_frame = LabelFrame(root)
+image_frame.grid(row=0, column=0, rowspan = 2)
 #create initial buttons
-
-
 button1 = Button(root, command=lambda m='0': change_screen(m))
 
 button2 = Button(root, command=lambda m='1' : change_screen(m))
@@ -262,9 +266,36 @@ button2 = Button(root, command=lambda m='1' : change_screen(m))
 button3 = Button(root, command=lambda m='2': change_screen(m))
 
 button4 = Button(root, command=lambda m='3': change_screen(m))
+#image label
+image1 = ImageTk.PhotoImage(Image.open(f'Images/{imagen}'))
+img_label = Label(image_frame, image = image1)
+img_label.grid(row = 0, column = 0)
 
-choice1 = Button(root, text = '10 questions', command = lambda m=10 : choice_handler(m))
-choice1.grid(row=1, column = 1, pady = 15)
+#score frame
+score_frame = LabelFrame(root, padx = 20, pady = 30)
+score_frame.grid(row=0, column=1, padx = 5, pady =20)
+
+#score label
+scorecard = Label(score_frame, text = f'Welcome to the game!\n\nClick the correct Syllabic to match the image\n\nGoodLuck!' )
+scorecard.grid(row=0, column=1)
+scorecard.configure(font = font_tuple)
+
+#choice frame
+
+choice_frame = LabelFrame(root, padx = 20, pady = 30)
+choice_frame.grid(row=1, column=1, padx = 5, pady =10)
+
+#choice buttons
+choice1 = Button(choice_frame, text = '10 questions', command = lambda m=10 : choice_handler(m))
+choice1.grid(row=0, column = 0, pady = 15)
 choice1.configure(font = font_tuple)
+
+choice2 = Button(choice_frame, text = '15 questions', command = lambda m=15 : choice_handler(m))
+choice2.grid(row=0, column = 1, pady = 15)
+choice2.configure(font = font_tuple)
+
+choice3 = Button(choice_frame, text = '20 questions', command = lambda m=20 : choice_handler(m))
+choice3.grid(row=0, column = 2, pady = 15)
+choice3.configure(font = font_tuple)
 
 root.mainloop()

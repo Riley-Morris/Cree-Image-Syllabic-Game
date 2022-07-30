@@ -282,20 +282,20 @@ scorecard.configure(font = font_tuple)
 
 #choice frame
 
-choice_frame = LabelFrame(root, padx = 20, pady = 30)
+choice_frame = LabelFrame(root, padx = 20, pady = 30, bd=0)
 choice_frame.grid(row=1, column=1, padx = 5, pady =10)
 
 #choice buttons
 choice1 = Button(choice_frame, text = '10 questions', command = lambda m=10 : choice_handler(m))
-choice1.grid(row=0, column = 0, pady = 15)
+choice1.grid(row=0, column = 0, pady = 15, padx = 5)
 choice1.configure(font = font_tuple)
 
 choice2 = Button(choice_frame, text = '15 questions', command = lambda m=15 : choice_handler(m))
-choice2.grid(row=0, column = 1, pady = 15)
+choice2.grid(row=0, column = 1, pady = 15, padx = 5)
 choice2.configure(font = font_tuple)
 
 choice3 = Button(choice_frame, text = '20 questions', command = lambda m=20 : choice_handler(m))
-choice3.grid(row=0, column = 2, pady = 15)
+choice3.grid(row=0, column = 2, pady = 15, padx = 5)
 choice3.configure(font = font_tuple)
 
 root.mainloop()
